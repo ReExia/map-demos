@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        html{height:100%}
+        body{height:100%;margin:0px;padding:0px}
+        #container{height:100%}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=xo25duNjvwtmIZnLq11e9BKj"></script>
+</head>
+<body>
+
+    <div id="container"></div>
+
+    <!--创建地图-->
+
+    <script>
+        var map = new BMap.Map("container");
+        var point = new BMap.Point(116.404, 39.915);
+        map.centerAndZoom(point, 15);
+
+        var tilelayer = new BMap.TileLayer();         // 创建地图层实例
+        tilelayer.getTilesUrl=function(){             // 设置图块路径
+            return "1.gif";
+        };
+        map.addTileLayer(tilelayer);                // 将图层添加到地图上
+    </script>
+
+
+</body>
+</html>

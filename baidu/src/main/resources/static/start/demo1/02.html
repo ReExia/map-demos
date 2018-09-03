@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        html{height:100%}
+        body{height:100%;margin:0px;padding:0px}
+        #container{height:100%}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=xo25duNjvwtmIZnLq11e9BKj"></script>
+</head>
+<body>
+
+    <div id="container"></div>
+
+    <!--创建地图-->
+
+    var map = new BMap.Map("container");
+    map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+    map.addControl(new BMap.NavigationControl());
+
+    <script>
+        var map = new BMap.Map("container");          // 创建地图实例
+        var point = new BMap.Point(116.404, 39.915);  // 创建点坐标
+        map.centerAndZoom(point, 15);                 // 初始化地图，设置中心点坐标和地图级别
+
+        //设置控件外观
+        var opts = {type: BMAP_NAVIGATION_CONTROL_SMALL}
+        map.addControl(new BMap.NavigationControl(opts));
+        //map.addControl(new BMap.NavigationControl()); //添加导航控件
+
+        //设置控件偏移量
+        var opts = {offset: new BMap.Size(150, 5)};
+        map.addControl(new BMap.ScaleControl(opts));
+        //map.addControl(new BMap.ScaleControl());
+        //map.addControl(new BMap.OverviewMapControl());
+        //map.addControl(new BMap.MapTypeControl());
+        map.setCurrentCity("北京"); // 仅当设置城市信息时，MapTypeControl的切换功能才能可用
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
+    <link href="http://api.map.baidu.com/library/IndoorMap/1.0/src/indoor.min.css?v=1.0.1 " rel="stylesheet"
+          type="text/css">
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family:"微软雅黑";
+            overflow: hidden;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        p {
+            margin-left:5px;
+            font-size:14px;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=xo25duNjvwtmIZnLq11e9BKj "></script>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/library/IndoorMap/1.0/src/indoor.min.js?v=1.0.1 "></script>
+    <title>显示图文窗口</title>
+</head>
+<body>
+<div id="map"></div>
+</body>
+</html>
+
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("map");
+    var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+    var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+    map.addControl(top_left_control);
+    map.addControl(top_left_navigation);
+    // 创建Map实例
+    map.centerAndZoom(new BMap.Point(116.340739,40.03592), 19);  // 初始化地图,设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+
+    var indoorManager = new BMapLib.IndoorManager(map, {
+        labelClick: function (e) {
+            console.log('labelClick', e);
+            createInfoWindowByInfo(e.uid);
+        },
+        labelMouseOver: function (e) {
+            console.log('labelMouseOver', e);
+        },
+        labelMouseOut: function (e) {
+            console.log('labelMouseOut', e);
+        }
+    });
+
+    function createInfoWindowByInfo(uid) {
+        indoorManager.getPoiInfoByUid(uid, {
+            onRequestSuccess: function (res) {
+                var sContent =
+                    "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>" + res.info.name + "</h4>" +
+                    "<img style='float:right;margin:4px' id='imgDemo' src='http://lbsyun.baidu.com/jsdemo/img/wucaicheng.jpg' width='139' height='104' title='天安门'/>" +
+                    "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>" + res.info.address +
+                    "</p>" +
+                    "</div>";
+                var infoWindow = new BMap.InfoWindow(sContent);
+                map.openInfoWindow(infoWindow, res.info.center); //开启信息窗口
+                document.getElementById('imgDemo').onload = function (){
+                    infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
+                }
+            },
+            onRequestError: function (res) {
+                alert(res.status);
+            }
+        });
+    }
+</script>

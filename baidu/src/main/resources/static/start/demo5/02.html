@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        html{height:100%}
+        body{height:100%;margin:0px;padding:0px}
+        #container{height:100%}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=xo25duNjvwtmIZnLq11e9BKj"></script>
+</head>
+<body>
+
+    <div id="container"></div>
+
+    <div id="log"></div>
+    <!--创建地图-->
+
+    <script>
+
+        //驾车
+      /*  var map = new BMap.Map("container");
+        map.centerAndZoom(new BMap.Point(116.404, 39.915), 14);
+        var driving = new BMap.DrivingRoute(map, {
+            renderOptions: {
+                map: map,
+                autoViewport: true
+            }
+        });
+        driving.search("中关村", "天安门");*/
+
+       //结果面板
+        /*var map = new BMap.Map("container");
+        map.centerAndZoom(new BMap.Point(116.404, 39.915), 14);
+        var driving = new BMap.DrivingRoute(map, {
+            renderOptions: {
+                map   : map,
+                panel : "results",
+                autoViewport: true
+            }
+        });
+        driving.search("中关村", "天安门");*/
+
+        var map = new BMap.Map("container");
+        map.centerAndZoom(new BMap.Point(116.404, 39.915), 14);
+        var options = {
+            onSearchComplete: function(results){
+                if (driving.getStatus() == BMAP_STATUS_SUCCESS){
+                    // 获取第一条方案
+                    var plan = results.getPlan(0);
+                    // 获取方案的驾车线路
+                    var route = plan.getRoute(0);
+                    // 获取每个关键步骤，并输出到页面
+                    var s = [];
+                    for (var i = 0; i < route.getNumSteps(); i ++){
+                        var step = route.getStep(i);
+                        s.push((i + 1) + ". " + step.getDescription());
+                    }
+                    document.getElementById("log").innerHTML = s.join("<br>");
+                }
+            }
+        };
+        var driving = new BMap.DrivingRoute(map, options);
+        driving.search("中关村","天安门");
+
+    </script>
+
+
+</body>
+</html>

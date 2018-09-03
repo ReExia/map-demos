@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
+    <link href="http://api.map.baidu.com/library/IndoorMap/1.0/src/indoor.min.css?v=1.0.1 " rel="stylesheet" type="text/css">
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family:"微软雅黑";
+            overflow: hidden;
+        }
+        #map {
+            width: 100%;
+            height: 500px;
+        }
+        p {
+            margin-left:5px;
+            font-size:14px;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=xo25duNjvwtmIZnLq11e9BKj"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/IndoorMap/1.0/src/indoor.min.js?v=1.0.1 "></script>
+    <title>根据buildingId设置室内图</title>
+</head>
+<body>
+<div id="map"></div>
+<div id="r-result">
+    <input type="button" onclick="setBuildingId(buildingId1);" value="进入五彩城" />
+    <input type="button" onclick="setIndoor(buildingId2, floor2);" value="进入大悦城2层" />
+    <input type="button" onclick="getBuildingId();" value="返回当前室内图buildingId" />
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("map"); // 创建Map实例
+    map.centerAndZoom(new BMap.Point(116.340739,40.03592), 19);  // 初始化地图,设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+    var buildingId1 = 'e96b44200baa3b4082288acc'; // 五彩城
+    var buildingId2 = 'a5ef680f2175daceb9df8f46'; // 西单大悦城
+    var floor2 = 'F2';
+
+    var getPoiInfoOptions = {
+        // 根据uid获取poi信息接口完成回调函数，（适用于根据uid初始化页面、根据uid设置室内图及楼层、根据uid获取poi信息等方法）
+        onRequestComplete: function (e) {
+            console.log('onRequestComplete', e);
+            alert(e.info.uid);
+        },
+        // 根据uid获取poi信息接口成功回调函数
+        onRequestSuccess: function (e) {
+            console.log('onRequestSuccess', e);
+        },
+        // 根据uid获取poi信息接口失败回调函数
+        onRequestError: function (e) {
+            console.log('onRequestError', e);
+        }
+    };
+
+    // 创建室内图实例
+    var indoorManager = new BMapLib.IndoorManager(map);
+    // 设置室内图buildingId
+    function setBuildingId(buildingId) {
+        indoorManager.setBuildingId(buildingId, getPoiInfoOptions);
+    }
+
+    // 设置室内图buildingId和floor
+    function setIndoor(buildingId, floor) {
+        indoorManager.setIndoor(buildingId, floor, getPoiInfoOptions);
+    }
+
+    // 返回当前室内图buildingId
+    function getBuildingId() {
+        alert(indoorManager.getBuildingId());
+    }
+
+</script>
+

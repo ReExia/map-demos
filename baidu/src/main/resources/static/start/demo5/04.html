@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        html{height:100%}
+        body{height:100%;margin:0px;padding:0px}
+        #container{height:100%}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=xo25duNjvwtmIZnLq11e9BKj"></script>
+</head>
+<body>
+
+    <div id="container"></div>
+
+    <div id="panorama" style="width:100%;height:100%"></div>
+
+
+    <p>在地图上添加全景控件，点击全景控件进入全景图</p>
+    <!--创建地图-->
+
+    <script>
+        var map = new BMap.Map("container");          // 创建地图实例
+        var point = new BMap.Point(116.404, 39.915);  // 创建点坐标
+        map.centerAndZoom(point, 15);                 // 初始化地图，设置中心点坐标和地图级别
+
+        //添加全景控件
+        var stCtrl = new BMap.PanoramaControl();
+        stCtrl.setOffset(new BMap.Size(20, 20));
+        map.addControl(stCtrl);
+
+
+        //全景地图用法
+
+        /*window.onload = function(){
+            var panorama = new BMap.Panorama('panorama');   //2
+            panorama.setPosition(new BMap.Point(120.320032, 31.589666));    //3
+            // panorama.setId('0100010000130501122416015Z1');
+            panorama.setPov({heading: -40, pitch: 6});  //4
+        }*/
+
+
+
+        map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        html{height:100%}
+        body{height:100%;margin:0px;padding:0px}
+        #container{height:100%}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=xo25duNjvwtmIZnLq11e9BKj"></script>
+</head>
+<body>
+
+    <div id="container"></div>
+
+    <!--创建地图-->
+
+    <script>
+        var map = new BMap.Map("container");
+        var point = new BMap.Point(116.404, 39.915);
+        map.centerAndZoom(point, 15);
+        var marker = new BMap.Marker(point);        // 创建标注
+
+        //添加标注事件
+        marker.addEventListener("click", function(){
+
+            var opts = {
+                width : 250,     // 信息窗口宽度
+                height: 100,     // 信息窗口高度
+                title : "标题"  // 信息窗口标题
+            };
+            var infoWindow = new BMap.InfoWindow("World", opts);  // 创建信息窗口对象
+            marker.openInfoWindow(infoWindow);      // 打开信息窗口
+        });
+
+        map.addOverlay(marker);                     // 将标注添加到地图中
+
+
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        html{height:100%}
+        body{height:100%;margin:0px;padding:0px}
+        #container{height:100%}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=xo25duNjvwtmIZnLq11e9BKj"></script>
+</head>
+<body>
+
+    <div id="container"></div>
+
+    <!--创建地图-->
+
+    <script>
+        var map = new BMap.Map("container");
+        var point = new BMap.Point(116.404, 39.915);
+        map.centerAndZoom(point, 15);
+
+        var polyline = new BMap.Polyline([
+                new BMap.Point(116.399, 39.910),
+                new BMap.Point(116.405, 39.920),
+                new BMap.Point(116.409, 39.920),
+                new BMap.Point(116.399, 39.910)
+            ],
+            {strokeColor:"blue", strokeWeight:6, strokeOpacity:0.5}
+        );
+        map.addOverlay(polyline);
+    </script>
+
+
+</body>
+</html>

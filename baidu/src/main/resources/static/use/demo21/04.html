@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
+    <link href="http://api.map.baidu.com/library/IndoorMap/1.0/src/indoor.min.css?v=1.0.1 " rel="stylesheet" type="text/css">
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family:"微软雅黑";
+            overflow: hidden;
+        }
+        #map {
+            width: 100%;
+            height: 500px;
+        }
+        p {
+            margin-left:5px;
+            font-size:14px;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=xo25duNjvwtmIZnLq11e9BKj"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/IndoorMap/1.0/src/indoor.min.js?v=1.0.1 "></script>
+    <title>设置室内图楼层</title>
+</head>
+<body>
+<div id="map"></div>
+<div id="r-result">
+    <input type="button" onclick="getAllFloors();" value="获取所有楼层" />
+    <input type="button" onclick="setIndoorFloor();" value="设置楼层" />
+    <input type="button" onclick="getCurrentFloor();" value="获取当前室内图的当前楼层" />
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("map");
+
+    // 创建Map实例
+    map.centerAndZoom(new BMap.Point(116.340739,40.03592), 19);  // 初始化地图,设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+
+    var indoorManager = new BMapLib.IndoorManager(map, {
+        beforeChangeFloor: function (e) {
+            alert('切换前为' + e.currentFloor);
+        },
+        afterChangeFloor: function (e) {
+            alert('切换后为' + e.currentFloor);
+        }
+    });
+    var floors = [];
+    var i = 0;
+    // 启用室内图
+    function getAllFloors() {
+        floors = indoorManager.getAllFloors();
+        alert(floors);
+    }
+    // 禁用室内图
+    function setIndoorFloor() {
+        if (floors.length <= 0) {
+            floors = indoorManager.getAllFloors();
+        }
+        indoorManager.setFloor(floors[i]);
+        if (i < floors.length) {
+            i++;
+        }
+        else {
+            i = 0;
+        }
+    }
+    // 启用室内图
+    function getCurrentFloor() {
+        alert(indoorManager.getFloor());
+    }
+</script>

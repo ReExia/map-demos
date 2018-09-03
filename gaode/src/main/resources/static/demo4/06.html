@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>注销事件</title>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.9&key=您申请的key值"></script>
+    <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+</head>
+<body>
+<div id="container"></div>
+<div class="button-group">
+    <input type="button" class="button" value="移除click事件" onClick="removeListener()"/>
+</div>
+<div id="tip">
+    已为地图绑定click事件。点击按钮移除click监听事件后，地图上单击鼠标，不再标marker点
+</div>
+<script type="text/javascript">
+    //初始化地图对象，加载地图
+    var map = new AMap.Map("container", {
+        zoom: 13,
+        resizeEnable: true
+    });
+    //事件回调函数
+    var callBackFn = function(e) {
+        new AMap.Marker({
+            map: map,
+            position: [e.lnglat.getLng(), e.lnglat.getLat()]
+        });
+    };
+    map.on('click', callBackFn);
+    //移除地图的click事件的监听
+    function removeListener() {
+        map.off('click', callBackFn);
+    }
+</script>
+</body>
+</html>

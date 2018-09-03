@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>RoundPoints</title>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="https://webapi.amap.com/maps?v=1.4.9&key=您申请的key值&plugin=Map3D,AMap.DistrictSearch"></script>
+
+</head>
+<body>
+<div id="container" ></div>
+<script>
+    var map = new AMap.Map('container', {
+        viewMode:'3D',
+        turboMode:false,
+        defaultCursor:'pointer',
+        showBuildingBlock:false,
+        expandZoomRange:true,
+        zooms:[3,20],
+        zoom:4,
+        forceVector:true,
+    });
+    var object3Dlayer = new AMap.Object3DLayer({zIndex:110,opacity:1});
+    map.add(object3Dlayer)
+
+    function lnglatToG20(lnglat){
+
+        lnglat = map.lngLatToGeodeticCoord(lnglat);
+        lnglat.x = AMap.Util.format(lnglat.x,3)
+        lnglat.y = AMap.Util.format(lnglat.y,3)
+        return lnglat;
+    }
+    new AMap.DistrictSearch({
+        subdistrict: 1,   //返回下一级行政区
+        extensions:'base'
+    }).search('中国', function(status, result) {
+        var provinces = result.districtList[0].districtList;
+        var points3D = new AMap.Object3D.RoundPoints();
+        points3D.transparent = true
+
+        var geometry = points3D.geometry;
+        for(var p=0;p<provinces.length;p+=1){
+            var center = lnglatToG20(provinces[p].center);
+            geometry.vertices.push(center.x,center.y , -Math.random()*10000000);//随机高度
+            geometry.pointSizes.push(Math.round(Math.random()*50));
+            geometry.vertexColors.push(p*0.029,p*0.015,p*0.01,0.5)
+        }
+        points3D.borderColor=[0.6,0.8,1,1];
+        points3D.borderWeight = 3;
+        object3Dlayer.add(points3D)
+    });
+</script>
+
+</body>
+</html>

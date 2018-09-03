@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>自定义事件</title>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.9&key=您申请的key值"></script>
+    <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+</head>
+<body>
+<div id="container" tabindex="0"></div>
+<div class="button-group">
+    <input id='bt1' type="button" class="button" value="绑定事件"/>
+    <input id='bt2' type="button" class="button" value="移除事件"/>
+</div>
+<div id="tip">
+    给地图绑定自定义的count事件，实现新增marker点的计数<br>
+    <span id="count">总共添加了0个Marker.</span>
+</div>
+<script type="text/javascript">
+    var map = new AMap.Map('container', {
+        resizeEnable: true,
+        zoom: 10,
+        center: [116.39, 39.9]
+    });
+    var count = 0, clickListener;
+    var _onClick = function(e) {
+        new AMap.Marker({
+            position: e.lnglat,
+            map: map
+        })
+        map.emit('count', {count: count += 1});//触发自定义事件
+    }
+    var countDiv = document.getElementById('count');
+    var _onCount = function(e) {
+        countDiv.innerHTML = "总共添加了" + e.count + "个Marker.";
+    }
+    map.on("count", _onCount); //绑定自定义事件，返回监听对象
+
+    var bind = function() {
+        remove();//防止重复绑定
+        clickListener = AMap.event.addListener(map, "click", _onClick);//绑定地图事件
+    }
+    var remove = function() {
+        if (clickListener) {
+            AMap.event.removeListener(clickListener);//移除地图事件，以绑定时返回的对象作为参数
+        }
+    }
+    //绑定Dom事件
+    var button1 = document.getElementById('bt1');
+    var listener1 = AMap.event.addDomListener(button1, 'click', bind);//给div绑定单击事件
+    var button2 = document.getElementById('bt2');
+    var listener2 = AMap.event.addDomListener(button2, 'click', remove);
+</script>
+</body>
+</html>
